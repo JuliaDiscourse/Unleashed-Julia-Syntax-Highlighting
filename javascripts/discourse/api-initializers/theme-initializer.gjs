@@ -631,4 +631,18 @@ import { apiInitializer } from "discourse/lib/api";
 export default apiInitializer((api) => {
   api.registerHighlightJSLanguage("julia", julia);
   api.registerHighlightJSLanguage("julia-repl", juliaRepl);
+  // Register meta-language that auto-detects between julia and julia-repl
+  api.registerHighlightJSLanguage("julia-auto", function(hljs) {
+    return {
+      case_insensitive: false,
+      aliases: ['julia-detect'],
+      contains: [{
+        className: '',
+        begin: '^',
+        end: '$',
+        subLanguage: ['julia', 'julia-repl'],
+        relevance: 0
+      }]
+    };
+  });
 });
