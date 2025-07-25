@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-var */
+
 import { apiInitializer } from "discourse/lib/api";
 
 /*
