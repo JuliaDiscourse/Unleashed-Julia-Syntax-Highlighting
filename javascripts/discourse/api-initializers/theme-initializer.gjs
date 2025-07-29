@@ -657,6 +657,28 @@ function juliaRepl(hljs) {
     contains: [
       {
         className: "meta.prompt",
+        begin: /^julia>(?=\s+@?code_llvm\b)/,
+        relevance: 15,
+        starts: {
+          end: /^(?=julia>)/,
+          returnBegin: true,
+          contains: [
+            {
+              // The Julia command line itself
+              begin: /\s+@?code_llvm/,
+              end: /^(?![ ]{6})/,
+              subLanguage: "julia",
+            },
+            {
+              // The LLVM IR output that follows
+              end: /^(?=julia>)/,
+              subLanguage: "llvm",
+            },
+          ],
+        },
+      },
+      {
+        className: "meta.prompt",
         begin: /^julia>/,
         relevance: 10,
         starts: {
