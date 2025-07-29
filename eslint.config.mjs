@@ -2,7 +2,7 @@ import DiscourseRecommendedTheme from "@discourse/lint-configs/eslint-theme";
 
 export default [
   {
-    ignores: ["src/languages/*.js"]
+    ignores: ["javascripts/discourse/api-initializers/languages/*.js"]
   },
   ...DiscourseRecommendedTheme
 ];
