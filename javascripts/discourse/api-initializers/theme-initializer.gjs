@@ -689,7 +689,7 @@ function juliaRepl(hljs) {
       {
         className: "comment",
         begin:
-          /^   _ _   _\| \|_  __ _   \|  Type "?" for help, "]?" for Pkg help.$/,
+          /^   _ _   _\| \|_  __ _   \|  Type "\?" for help, "\]\?" for Pkg help.$/,
         end: /$/,
         relevance: 10,
       },
