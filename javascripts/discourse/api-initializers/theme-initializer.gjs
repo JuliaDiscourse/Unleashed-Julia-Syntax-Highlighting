@@ -679,6 +679,28 @@ function juliaRepl(hljs) {
       },
       {
         className: "meta.prompt",
+        begin: /^julia>(?=\s+@?code_native\b)/,
+        relevance: 15,
+        starts: {
+          end: /^(?=julia>)/,
+          returnBegin: true,
+          contains: [
+            {
+              // The Julia command line itself
+              begin: /\s+@?code_native/,
+              end: /^(?![ ]{6})/,
+              subLanguage: "julia",
+            },
+            {
+              // The assembly that follows
+              end: /^(?=julia>)/,
+              subLanguage: ["armasm", "x86asm"],
+            },
+          ],
+        },
+      },
+      {
+        className: "meta.prompt",
         begin: /^julia>/,
         relevance: 10,
         starts: {
