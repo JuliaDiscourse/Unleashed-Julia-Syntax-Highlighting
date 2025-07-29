@@ -684,15 +684,7 @@ export default apiInitializer((api) => {
     return {
       case_insensitive: false,
       aliases: ["julia-detect"],
-      contains: [
-        {
-          className: "",
-          begin: "^",
-          end: "$",
-          subLanguage: ["julia", "julia-repl"],
-          relevance: 0,
-        },
-      ],
+      subLanguage: ["julia", "julia-repl"],
     };
   });
 });
