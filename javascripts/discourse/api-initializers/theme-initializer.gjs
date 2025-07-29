@@ -668,11 +668,13 @@ function juliaRepl(hljs) {
               begin: /\s+@?code_llvm/,
               end: /^(?![ ]{6})/,
               subLanguage: "julia",
+              endsWithParent: true,
             },
             {
               // The LLVM IR output that follows
-              end: /^(?=julia>)/,
+              begin: /^./,
               subLanguage: "llvm",
+              endsWithParent: true,
             },
           ],
         },
@@ -690,11 +692,13 @@ function juliaRepl(hljs) {
               begin: /\s+@?code_native/,
               end: /^(?![ ]{6})/,
               subLanguage: "julia",
+              endsWithParent: true,
             },
             {
               // The assembly that follows
-              end: /^(?=julia>)/,
+              begin: /^./,
               subLanguage: ["armasm", "x86asm"],
+              endsWithParent: true,
             },
           ],
         },
