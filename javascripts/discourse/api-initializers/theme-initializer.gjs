@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 
 import { apiInitializer } from "discourse/lib/api";
-import { julia } from "./languages/julia.js";
-import { juliaRepl } from "./languages/julia-repl.js";
+import { julia } from "../../../src/languages/julia.js";
+import { juliaRepl } from "../../../src/languages/julia-repl.js";
 
 export default apiInitializer((api) => {
   api.registerHighlightJSLanguage("julia", julia);
