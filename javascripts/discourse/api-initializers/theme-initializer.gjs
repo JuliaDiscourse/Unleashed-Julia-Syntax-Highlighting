@@ -666,6 +666,57 @@ function juliaRepl(hljs) {
           subLanguage: "julia",
         },
       },
+      // Tag the banner entirely as a comment
+      {
+        className: "comment",
+        begin: /^               _$/,
+        end: /$/,
+        relevance: 10,
+      },
+      {
+        className: "comment",
+        begin:
+          /^   _       _ _\(_\)_     \|  Documentation: https:\/\/docs.julialang.org$/,
+        end: /$/,
+        relevance: 10,
+      },
+      {
+        className: "comment",
+        begin: /^  \(_\)     \| \(_\) \(_\)    \|$/,
+        end: /$/,
+        relevance: 10,
+      },
+      {
+        className: "comment",
+        begin:
+          /^   _ _   _\| \|_  __ _   \|  Type "?" for help, "]?" for Pkg help.$/,
+        end: /$/,
+        relevance: 10,
+      },
+      {
+        className: "comment",
+        begin: /^  \| \| \| \| \| \| \|\/ _` \|  \|$/,
+        end: /$/,
+        relevance: 10,
+      },
+      {
+        className: "comment",
+        begin: /^  \| \| \|_\| \| \| \| \(_\| \|  \|/,
+        end: /$/,
+        relevance: 10,
+      },
+      {
+        className: "comment",
+        begin: /^ _\/ \|\\__'_\|_\|_\|\\__'_\|  \|/,
+        end: /$/,
+        relevance: 10,
+      },
+      {
+        className: "comment",
+        begin: /^\|__\/                   \|$/,
+        end: /$/,
+        relevance: 10,
+      },
     ],
     // jldoctest Markdown blocks are used in the Julia manual and package docs indicate
     // code snippets that should be verified when the documentation is built. They can be
