@@ -1,1 +1,1 @@
-javascripts/discourse/api-initializers/languages/*.js
+src/languages/*.js
