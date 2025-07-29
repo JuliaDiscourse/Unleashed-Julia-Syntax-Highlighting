@@ -673,8 +673,8 @@ function juliaRepl(hljs) {
               // The LLVM IR output that follows
               end: /^(?=julia>)/,
               subLanguage: "llvm",
-            }
-          ]
+            },
+          ],
         },
       },
       {
