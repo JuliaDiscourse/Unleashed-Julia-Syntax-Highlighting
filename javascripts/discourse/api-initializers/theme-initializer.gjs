@@ -656,6 +656,7 @@ function juliaIR(hljs) {
   const IR_KEYWORDS = [
     "goto",
     "not",
+    "intrinsic",
     "invoke",
     "call",
     "enter",
