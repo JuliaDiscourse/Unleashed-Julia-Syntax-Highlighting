@@ -628,6 +628,95 @@ function julia(hljs) {
 }
 
 /*
+Language: Julia IR
+Description: Julia Static Single Assignment (SSA) form Intermediate Representation
+Author: Matt Bauman (& Claude)
+Website: https://docs.julialang.org/en/v1/devdocs/ssair/
+Category: scientific
+Extends: julia.js
+*/
+
+function juliaIR(hljs) {
+  // Get the base Julia language definition
+  const julia = hljs.getLanguage('julia');
+
+  if (!julia) {
+    throw new Error('Julia language definition not found. Julia IR extends Julia.');
+  }
+
+  // Clone the Julia definition to avoid modifying the original
+  const juliaIR = {
+    ...julia,
+    name: 'julia-ir',
+  };
+
+  // Add IR-specific keywords to existing Julia keywords
+  const IR_KEYWORDS = [
+    'goto', 'not', 'invoke', 'call', 'enter', 'leave',
+    'unreachable', 'φᶜ', 'φ', 'π', 'ϒ'
+  ];
+
+  // Extend keywords
+  if (juliaIR.keywords) {
+    juliaIR.keywords = {
+      ...juliaIR.keywords,
+      keyword: [...(juliaIR.keywords.keyword || []), ...IR_KEYWORDS]
+    };
+  }
+
+  // IR-specific patterns that need to be added to the contains array
+  const IR_PATTERNS = [
+    // SSA values (%1, %2, etc.) - highest priority
+    {
+      scope: 'variable',
+      match: /%\d+/,
+      relevance: 10
+    },
+
+    // Basic block labels (1 ─, 2 ┄, etc.) and box drawing
+    {
+      scope: 'section',
+      match: /^\s*\d*[ ─│╻╷└┃┌┄]+/,
+      relevance: 8
+    },
+
+    // Control flow labels (#1, #2, etc.)
+    {
+      scope: 'symbol',
+      match: /#\d+/,
+      relevance: 5
+    },
+
+    // Warned type annotations
+    {
+      scope: 'type.unstable',
+      match: /::(Any|Box)\b/,
+      relevance: 8
+    },
+
+    // CodeInfo wrapper
+    {
+      scope: 'meta',
+      begin: /\bCodeInfo\s*\(/,
+      end: /$/,
+      contains: ['self'],
+      relevance: 10
+    },
+  ];
+
+  // Prepend IR patterns to the contains array (higher priority than base Julia patterns)
+  if (juliaIR.contains) {
+    juliaIR.contains = [...IR_PATTERNS, ...juliaIR.contains];
+  } else {
+    juliaIR.contains = IR_PATTERNS;
+  }
+
+  juliaIR.case_insensitive = false;
+
+  return juliaIR;
+}
+
+/*
     Language: Julia REPL
     Description: Julia REPL sessions
     Author: Morten Piibeleht <morten.piibeleht@gmail.com>
@@ -698,6 +787,30 @@ function juliaRepl(hljs) {
               // The assembly that follows
               begin: /^./,
               subLanguage: ["armasm", "x86asm"],
+              endsWithParent: true,
+            },
+          ],
+        },
+      },
+      {
+        className: "meta.prompt",
+        begin: /^julia>(?=\s+@?code_(typed|lowered|warntype)\b)/,
+        relevance: 15,
+        starts: {
+          end: /^(?=julia>)/,
+          returnBegin: true,
+          contains: [
+            {
+              // The Julia command line itself
+              begin: /\s+@?code_(typed|lowered|warntype)/,
+              end: /^(?![ ]{6})/,
+              subLanguage: "julia",
+              endsWithParent: true,
+            },
+            {
+              // The IR that follows
+              begin: /^./,
+              subLanguage: "julia-ir",
               endsWithParent: true,
             },
           ],
@@ -777,6 +890,7 @@ function juliaRepl(hljs) {
 
 export default apiInitializer((api) => {
   api.registerHighlightJSLanguage("julia", julia);
+  api.registerHighlightJSLanguage("julia-ir", juliaIR);
   api.registerHighlightJSLanguage("julia-repl", juliaRepl);
   // Register meta-language that auto-detects between julia and julia-repl
   api.registerHighlightJSLanguage("julia-auto", function (hljs) {
