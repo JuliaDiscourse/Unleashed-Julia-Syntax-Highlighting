@@ -671,7 +671,7 @@ function juliaIR(hljs) {
   if (jlir.keywords) {
     jlir.keywords = {
       ...jlir.keywords,
-      keyword: [...(juliaIR.keywords.keyword || []), ...IR_KEYWORDS],
+      keyword: [...(jlir.keywords.keyword || []), ...IR_KEYWORDS],
     };
   }
 
