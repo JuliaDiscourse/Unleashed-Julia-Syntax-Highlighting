@@ -681,28 +681,28 @@ function juliaIR(hljs) {
     {
       scope: "variable",
       match: /%\d+/,
-      relevance: 10,
+      relevance: 0,
     },
 
     // Basic block labels (1 ─, 2 ┄, etc.) and box drawing
     {
       scope: "section",
       match: /^\s*\d*[ ─│╻╷└┃┌┄]+/,
-      relevance: 8,
+      relevance: 2,
     },
 
     // Control flow labels (#1, #2, etc.)
     {
       scope: "symbol",
       match: /#\d+/,
-      relevance: 5,
+      relevance: 0,
     },
 
     // Warned type annotations
     {
       scope: "type.unstable",
       match: /::(Any|Box)\b/,
-      relevance: 8,
+      relevance: 0,
     },
 
     // CodeInfo wrapper
@@ -711,7 +711,7 @@ function juliaIR(hljs) {
       begin: /\bCodeInfo\s*\(/,
       end: /$/,
       contains: ["self"],
-      relevance: 10,
+      relevance: 0,
     },
   ];
 
@@ -758,7 +758,7 @@ function juliaRepl(hljs) {
       {
         className: "meta.prompt",
         begin: /^julia>(?=\s+@?code_llvm\b)/,
-        relevance: 15,
+        relevance: 50,
         starts: {
           end: /^(?=julia>)/,
           returnBegin: true,
@@ -782,7 +782,7 @@ function juliaRepl(hljs) {
       {
         className: "meta.prompt",
         begin: /^julia>(?=\s+@?code_native\b)/,
-        relevance: 15,
+        relevance: 50,
         starts: {
           end: /^(?=julia>)/,
           returnBegin: true,
@@ -806,7 +806,7 @@ function juliaRepl(hljs) {
       {
         className: "meta.prompt",
         begin: /^julia>(?=\s+@?code_(typed|lowered|warntype)\b)/,
-        relevance: 15,
+        relevance: 100,
         starts: {
           end: /^(?=julia>)/,
           returnBegin: true,
@@ -830,7 +830,7 @@ function juliaRepl(hljs) {
       {
         className: "meta.prompt",
         begin: /^julia>/,
-        relevance: 10,
+        relevance: 20,
         starts: {
           // end the highlighting if we are on a new line and the line does not have at
           // least six spaces in the beginning
