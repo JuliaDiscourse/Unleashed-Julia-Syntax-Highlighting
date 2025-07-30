@@ -630,7 +630,7 @@ function julia(hljs) {
 /*
 Language: Julia IR
 Description: Julia Static Single Assignment (SSA) form Intermediate Representation
-Author: Matt Bauman (& Claude)
+Author: Matt Bauman
 Website: https://docs.julialang.org/en/v1/devdocs/ssair/
 Category: scientific
 Extends: julia.js
@@ -638,29 +638,40 @@ Extends: julia.js
 
 function juliaIR(hljs) {
   // Get the base Julia language definition
-  const julia = hljs.getLanguage('julia');
+  const jl = hljs.getLanguage("julia");
 
-  if (!julia) {
-    throw new Error('Julia language definition not found. Julia IR extends Julia.');
+  if (!jl) {
+    throw new Error(
+      "Julia language definition not found. Julia IR extends Julia."
+    );
   }
 
   // Clone the Julia definition to avoid modifying the original
-  const juliaIR = {
-    ...julia,
-    name: 'julia-ir',
+  const jlir = {
+    ...jl,
+    name: "julia-ir",
   };
 
   // Add IR-specific keywords to existing Julia keywords
   const IR_KEYWORDS = [
-    'goto', 'not', 'invoke', 'call', 'enter', 'leave',
-    'unreachable', 'φᶜ', 'φ', 'π', 'ϒ'
+    "goto",
+    "not",
+    "invoke",
+    "call",
+    "enter",
+    "leave",
+    "unreachable",
+    "φᶜ",
+    "φ",
+    "π",
+    "ϒ",
   ];
 
   // Extend keywords
-  if (juliaIR.keywords) {
-    juliaIR.keywords = {
-      ...juliaIR.keywords,
-      keyword: [...(juliaIR.keywords.keyword || []), ...IR_KEYWORDS]
+  if (jlir.keywords) {
+    jlir.keywords = {
+      ...jlir.keywords,
+      keyword: [...(juliaIR.keywords.keyword || []), ...IR_KEYWORDS],
     };
   }
 
@@ -668,52 +679,52 @@ function juliaIR(hljs) {
   const IR_PATTERNS = [
     // SSA values (%1, %2, etc.) - highest priority
     {
-      scope: 'variable',
+      scope: "variable",
       match: /%\d+/,
-      relevance: 10
+      relevance: 10,
     },
 
     // Basic block labels (1 ─, 2 ┄, etc.) and box drawing
     {
-      scope: 'section',
+      scope: "section",
       match: /^\s*\d*[ ─│╻╷└┃┌┄]+/,
-      relevance: 8
+      relevance: 8,
     },
 
     // Control flow labels (#1, #2, etc.)
     {
-      scope: 'symbol',
+      scope: "symbol",
       match: /#\d+/,
-      relevance: 5
+      relevance: 5,
     },
 
     // Warned type annotations
     {
-      scope: 'type.unstable',
+      scope: "type.unstable",
       match: /::(Any|Box)\b/,
-      relevance: 8
+      relevance: 8,
     },
 
     // CodeInfo wrapper
     {
-      scope: 'meta',
+      scope: "meta",
       begin: /\bCodeInfo\s*\(/,
       end: /$/,
-      contains: ['self'],
-      relevance: 10
+      contains: ["self"],
+      relevance: 10,
     },
   ];
 
   // Prepend IR patterns to the contains array (higher priority than base Julia patterns)
-  if (juliaIR.contains) {
-    juliaIR.contains = [...IR_PATTERNS, ...juliaIR.contains];
+  if (jlir.contains) {
+    jlir.contains = [...IR_PATTERNS, ...jlir.contains];
   } else {
-    juliaIR.contains = IR_PATTERNS;
+    jlir.contains = IR_PATTERNS;
   }
 
-  juliaIR.case_insensitive = false;
+  jlir.case_insensitive = false;
 
-  return juliaIR;
+  return jlir;
 }
 
 /*
